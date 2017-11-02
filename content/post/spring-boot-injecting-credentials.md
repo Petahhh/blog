@@ -7,7 +7,7 @@ categories:
 - CF
 
 date: 2017-11-02T00:00:00Z
-draft: true
+draft: false
 short: |
   Configuring Spring Boot apps in Cloud Foundry is super easy once we take advantage of ConfigurationProperties and user-provided services.
 title: "Injecting Credentials Into Spring Boot Apps – The Easy Way"
