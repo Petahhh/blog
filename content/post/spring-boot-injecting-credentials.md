@@ -63,6 +63,7 @@ Unfortunately the `VCAP_SERVICES` environment variable is a JSON blob, which is 
 Don't take on the unnecessary pain of trying to parse it manually! That is no fun.
 
 ~~~java
+ObjectMapper mapper = new ObjectMapper();
 JsonNode vcapServices = mapper.readTree(System.getEnv("VCAP_SERVICES"));
 
 String userProvidedServices = vcapServices.get("user-provided");
@@ -71,7 +72,7 @@ String userProvidedServices = vcapServices.get("user-provided");
 
 ## `@ConfigurationProperties` To The Rescue!
 
-It turns out, Spring Boot and the [Cloud Foundry VCAP Environment Post Processor](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/cloud/CloudFoundryVcapEnvironmentPostProcessor.html) has solved this problem for us! When we create a user-provided service, the VCAP post-processor automatically injects our cat_picture_service into the environment for us as a property called  `vcap.services.cat_picture_service.credentials`.
+It turns out, Spring Boot already includes the [Cloud Foundry VCAP Environment Post Processor](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/cloud/CloudFoundryVcapEnvironmentPostProcessor.html), which solves this problem for us! When we create a user-provided service, the VCAP post-processor automatically injects our cat_picture_service into the environment for us as a property called  `vcap.services.cat_picture_service.credentials`.
 
 The `@ConfigurationProperties` annotation allows us to take advantage of this by creating a plain old data object which Spring Boot will automatically inject with the corresponding credentials.
 
@@ -141,5 +142,9 @@ export VCAP_SERVICES_CAT_PICTURE_SERVICE_CREDENTIALS_PASSWORD='HackThePlanet!'
 
 ## Added Benefits
 With automatically configured Properties objects, we get fast feedback when our app is misconfigured (i.e. something would be `null`), because Spring Boot will fail to start. And, we can get type-checking on each of our properties! Just mark each field as `int` or `String` or whatever type we expect.
+
+## Other thing
+
+There is this other thing: https://cloud.spring.io/spring-cloud-connectors/ But it doens't do User-Provided Services automatically.
 
 Never parse a `VCAP_SERVICES` JSON blob again!
